@@ -34,6 +34,8 @@ uv sync
 export GLC_BASE_URL=http://127.0.0.1:8111
 export S13_GATEWAY_PROVIDER=gemini
 export S13_SANDBOX_ROOT="$PWD/sandbox"
+export S13_OLLAMA_URL=http://localhost:11434
+export S13_EMBED_MODEL=nomic-embed-text
 export S13_CHUNK_MODEL=phi4:latest
 export S13_LIVE_SEMANTIC_CHUNKING=1
 

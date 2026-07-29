@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import re
 from collections import Counter
 from typing import Protocol
@@ -15,8 +16,9 @@ class Embedder(Protocol):
 
 class OllamaNomicEmbedder:
     """Small dependency-free client for a locally running Ollama instance."""
-    def __init__(self, model: str = "nomic-embed-text", base_url: str = "http://localhost:11434"):
-        self.model, self.base_url = model, base_url.rstrip("/")
+    def __init__(self, model: str | None = None, base_url: str | None = None):
+        self.model = model or os.getenv("S13_EMBED_MODEL", "nomic-embed-text")
+        self.base_url = (base_url or os.getenv("S13_OLLAMA_URL", "http://localhost:11434")).rstrip("/")
 
     @property
     def fingerprint(self) -> str:

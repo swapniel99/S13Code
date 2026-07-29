@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from s13code.core.memory.chunking import semantic_chunks
-from s13code.core.memory.embeddings import DeterministicEmbedder
+from s13code.core.memory.chunking import OllamaTopicSegmenter, semantic_chunks
+from s13code.core.memory.embeddings import DeterministicEmbedder, OllamaNomicEmbedder
 
 
 TEXT = """Artificial intelligence systems learn patterns from data. Neural networks train on examples.
@@ -37,6 +37,17 @@ class RepeatedSuffix:
 class FailingSegmenter:
     def second_topic(self, block: str) -> str:
         raise RuntimeError("ollama unavailable")
+
+
+def test_ollama_clients_read_s13_environment(monkeypatch):
+    monkeypatch.setenv("S13_OLLAMA_URL", "http://ollama.internal:11434/")
+    monkeypatch.setenv("S13_EMBED_MODEL", "bge-m3")
+    monkeypatch.setenv("S13_CHUNK_MODEL", "qwen3:latest")
+
+    assert OllamaNomicEmbedder().model == "bge-m3"
+    assert OllamaNomicEmbedder().base_url == "http://ollama.internal:11434"
+    assert OllamaTopicSegmenter().model == "qwen3:latest"
+    assert OllamaTopicSegmenter().base_url == "http://ollama.internal:11434"
 
 
 def test_rohan_v2_rolls_the_exact_second_topic_without_overlap_or_loss():

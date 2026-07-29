@@ -63,9 +63,9 @@ class TopicSegmenter(Protocol):
 class OllamaTopicSegmenter:
     """The local LLM boundary decision from Rohan's V2 implementation."""
 
-    def __init__(self, model: str | None = None, base_url: str = "http://localhost:11434") -> None:
+    def __init__(self, model: str | None = None, base_url: str | None = None) -> None:
         self.model = model or os.getenv("S13_CHUNK_MODEL", "phi4:latest")
-        self.base_url = base_url.rstrip("/")
+        self.base_url = (base_url or os.getenv("S13_OLLAMA_URL", "http://localhost:11434")).rstrip("/")
 
     def second_topic(self, block: str) -> str:
         prompt = f'''You are a markdown document segmenter.
