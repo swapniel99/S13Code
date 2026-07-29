@@ -6,6 +6,9 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.tokensave/
+.claude/
+graphify-out/
 .coverage
 htmlcov/
 *.sqlite
