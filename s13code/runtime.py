@@ -308,7 +308,7 @@ class S13Runtime:
             release = getattr(runtime.memory.embedder, "release", None)
             if release:
                 release()
-            result = await llm(f"User request:\n{prompt}\n\nAuthorized memory evidence:\n{evidence_text}", system)
+            result = await llm(f"User request:\n{prompt}\n\nAuthorized evidence:\n{evidence_text}", system)
             text = result["text"]
             runtime.memory.write(MemoryRecord(
                 MemoryKind.EPISODE, scope, text,

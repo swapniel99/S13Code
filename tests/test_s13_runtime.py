@@ -9,7 +9,8 @@ def test_agent_run_uses_memory_then_expands_to_a_grounded_answer(app_client, mon
     app_client.app.state.s13_runtime.memory.embedder = DeterministicEmbedder(256)
 
     async def fake_gateway(_app, prompt: str, _system: str):
-        assert "Authorized memory evidence" in prompt
+        assert "Authorized evidence" in prompt
+        assert "Authorized memory evidence" not in prompt
         assert "Budget is ₹75,000." in prompt
         return {"text": "Your current budget is ₹75,000. [source: chat://u/2]", "provider": "fake", "model": "fake"}
 
