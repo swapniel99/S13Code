@@ -37,14 +37,14 @@ class OllamaNomicEmbedder:
     def _embed(self, text: str) -> list[float]:
         # Ollama's current endpoint accepts batched input; older installs use
         # /api/embeddings. Supporting both keeps local workshop setup simple.
-        body = json.dumps({"model": self.model, "input": text}).encode()
+        body = json.dumps({"model": self.model, "input": text, "options": {"num_ctx": 2048}}).encode()
         request = Request(self.base_url + "/api/embed", data=body, headers={"Content-Type": "application/json"})
         try:
             with urlopen(request, timeout=30) as response:  # nosec B310: local configurable service
                 data = json.load(response)
             return list(data["embeddings"][0])
         except Exception:
-            old_body = json.dumps({"model": self.model, "prompt": text}).encode()
+            old_body = json.dumps({"model": self.model, "prompt": text, "options": {"num_ctx": 2048}}).encode()
             old = Request(self.base_url + "/api/embeddings", data=old_body, headers={"Content-Type": "application/json"})
             with urlopen(old, timeout=30) as response:  # nosec B310: local configurable service
                 return list(json.load(response)["embedding"])
